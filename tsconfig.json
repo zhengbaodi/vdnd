@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "lib": [
+      "DOM",
+      "ESNext"
+    ],
+    "strict": true,
+    "alwaysStrict": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "useDefineForClassFields": true,
+    "isolatedModules": true,
+    "checkJs": false,
+    "noEmit": true,
+    "importHelpers": false,
+    "module": "ESNext",
+    "target": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "noUnusedParameters": false,
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "@base/*": [
+        "src/base/*"
+      ],
+      "@shared/*": [
+        "src/shared/*"
+      ],
+      "@wrapper/*": [
+        "src/wrapper/*"
+      ]
+    }
+  },
+  "exclude": [
+    "examples",
+    "playground",
+    "node_modules",
+  ],
+  "include": [
+    "types",
+    "src",
+    "test-utils"
+  ]
+}

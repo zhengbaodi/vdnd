@@ -1,0 +1,10 @@
+{
+  "name": "@vdnd/test-utils",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "module": "./index.ts",
+  "dependencies": {
+    "vue": "catalog:vue3"
+  }
+}

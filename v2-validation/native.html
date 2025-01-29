@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vue2 valdation -- native</title>
+    <link rel="icon" href="./vdnd.svg" />
+    <link rel="stylesheet" href="./index.css" />
+    <style>
+      [v-cloak] {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app" v-cloak>
+      <native-dnd :instance="dnd" class="example">
+        <div class="left">
+          <dnd-source
+            v-for="(number, index) in left"
+            :key="index"
+            label="left"
+            :value="index"
+            :draggable="index !== 1"
+            :dropzone="index === 2"
+            :droppable="false"
+          >
+            {{ index !== 2 ? number : 'Drag Here' }}
+          </dnd-source>
+        </div>
+        <dnd-dropzone class="right" label="right">
+          <div class="empty">Drag Here</div>
+        </dnd-dropzone>
+      </native-dnd>
+    </div>
+  </body>
+  <script src="./libs/vue.js"></script>
+  <script src="./libs/vdnd2.js"></script>
+  <script src="./index.js"></script>
+  <script>
+    loadEnv('native');
+  </script>
+</html>

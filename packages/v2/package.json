@@ -1,0 +1,51 @@
+{
+  "name": "@vdnd/v2",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Easy used vue drag and drop component library.",
+  "module": "dist/index.mjs",
+  "main": "dist/index.cjs",
+  "types": "dist/index.d.ts",
+  "unpkg": "dist/index.iife.min.js",
+  "jsdelivr": "dist/index.iife.min.js",
+  "keywords": [
+    "vdnd",
+    "vue-dnd",
+    "vue2-dnd",
+    "vue3-dnd",
+    "drag and drop",
+    "vue drag and drop"
+  ],
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "copy": "node ./scripts/copy.mjs",
+    "prebuild": "rimraf ./dist && pnpm copy",
+    "build": "rollup -c rollup.config.js",
+    "prepack": "pnpm build"
+  },
+  "peerDependencies": {
+    "vue": "catalog:vue2"
+  },
+  "peerDependenciesMeta": {
+    "vue": {
+      "optional": true
+    }
+  },
+  "license": "MIT",
+  "author": {
+    "name": "zhengbaodi",
+    "email": "zhengbaodi329@outlook.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zhengbaodi/vdnd",
+    "directory": "/packages/v2"
+  },
+  "homepage": "https://github.com/zhengbaodi/vdnd",
+  "bugs": {
+    "url": "https://github.com/zhengbaodi/vdnd/issues",
+    "email": "zhengbaodi329@outlook.com"
+  }
+}

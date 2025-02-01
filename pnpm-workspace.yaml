@@ -6,6 +6,3 @@ catalogs:
     vue: ^2.7.0
   vue3:
     vue: ^3.0.0
-  vue:
-    vue2: pnpm:vue@^2.7.0
-    vue3: pnpm:vue@^3.0.0

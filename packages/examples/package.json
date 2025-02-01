@@ -1,6 +1,5 @@
 {
   "name": "@vdnd/examples",
-  "version": "0.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -23,9 +22,7 @@
     "npm-run-all2": "^6.2.0",
     "rollup-plugin-gzip": "^4.0.1",
     "sass-embedded": "^1.77.8",
-    "terser": "^5.37.0",
     "vite": "^5.3.1",
     "vue-tsc": "^2.0.21"
   }
 }
-

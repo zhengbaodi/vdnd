@@ -1,4 +1,4 @@
-import { isReactive, reactive, ref, shallowRef, toRefs, unref } from 'vue';
+import { ref, shallowRef } from 'vue';
 import DndElement from '../DndElement';
 import { Emitter, ensureArray } from '@vdnd/shared';
 
@@ -74,15 +74,12 @@ export default function useDndInstance<O extends DndOptions, V>(
 
   const emitter = new Emitter<DndEventTable<O, V>>();
 
-  const { type, ...restOptions } = isReactive(options)
-    ? toRefs(options)
-    : options;
-
+  const { type, ...restOptions } = options;
   const usedOptions = ref(restOptions);
 
   return {
     get type() {
-      return unref(type) as MapDndType<O>;
+      return type as MapDndType<O>;
     },
     get options() {
       // vue2, avoid reporting errors when rollup .d.ts file
@@ -128,35 +125,26 @@ export default function useDndInstance<O extends DndOptions, V>(
 export function useMouseDnd<V = any>(
   options: Omit<MouseDndOptions<V>, 'type'> = {}
 ): DndInstance<MouseDndOptions<V>, V> {
-  const _options = isReactive(options) ? toRefs(options) : options;
-  return useDndInstance<MouseDndOptions<V>, V>(
-    reactive({
-      type: 'mouse',
-      ..._options,
-    })
-  );
+  return useDndInstance({
+    type: 'mouse',
+    ...options,
+  });
 }
 
 export function useTouchDnd<V = any>(
   options: Omit<TouchDndOptions<V>, 'type'> = {}
 ): DndInstance<TouchDndOptions<V>, V> {
-  const _options = isReactive(options) ? toRefs(options) : options;
-  return useDndInstance<TouchDndOptions<V>, V>(
-    reactive({
-      type: 'touch',
-      ..._options,
-    })
-  );
+  return useDndInstance({
+    type: 'touch',
+    ...options,
+  });
 }
 
 export function useNativeDnd<V = any>(
   options: Omit<NativeDndOptions, 'type'> = {}
 ): DndInstance<NativeDndOptions, V> {
-  const _options = isReactive(options) ? toRefs(options) : options;
-  return useDndInstance<NativeDndOptions, V>(
-    reactive({
-      type: 'native',
-      ..._options,
-    })
-  );
+  return useDndInstance({
+    type: 'native',
+    ...options,
+  });
 }

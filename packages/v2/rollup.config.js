@@ -92,9 +92,9 @@ const rollupRuntimeOptions = [
     external,
     output: [
       {
-        file: '../../v2-validation/libs/vdnd2.js',
+        file: './test/libs/vdnd2.js',
         format: 'iife',
-        sourcemap: 'inline',
+        sourcemap: true,
         name: PKG_NAME,
         globals: iifeGlobals,
       },

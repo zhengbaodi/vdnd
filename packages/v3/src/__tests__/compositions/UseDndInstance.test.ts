@@ -25,7 +25,7 @@ afterEach(() => {
   dnd.$destroy();
 });
 
-it("'options' should be reactive", () => {
+it("'options' should be deep reactive", () => {
   let dummy = 0;
   watchSyncEffect(() => {
     dummy += Number(!!dnd.options);

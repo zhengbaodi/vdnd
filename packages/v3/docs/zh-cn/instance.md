@@ -1,5 +1,7 @@
 # 介绍
 
+> 为了更好地理解本章内容，请先阅读[README](../../README.zh-cn.md)中的API#组件章节。
+
 **拖放交互实例**允许我们自定义拖放交互的细节，并提供了一些非常实用的方法。
 
 vdnd 提供了 `useNativeDnd`、`useMouseDnd` 和 `useTouchDnd` 三种创建**拖放交互实例**的方法，它们分别用于 `NativeDnd`、`MouseDnd` 和 `TouchDnd`。vdnd 也提供了方法 `useDnd`，它通过 `type` 选项来定义实例的种类。
@@ -8,7 +10,7 @@ vdnd 提供了 `useNativeDnd`、`useMouseDnd` 和 `useTouchDnd` 三种创建**�
 
 # 实例选项
 
-创建**拖放交互实例**时提供的选项对象，可以由 `reactive` 或 `shallowReactive` 创建。
+创建**拖放交互实例**时提供的选项对象。
 
 在下文中，若不对选项做特殊说明，则默认其为通用选项。
 
@@ -135,7 +137,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/DataTransfer/setDragImage
 | ------ | -------- |
 | object | 实例选项 |
 
-vdnd 支持通过 **instance.options = xxx** 来触发副作用。
+vdnd 支持通过 **instance.options = xxx** 和 **instance.options.xxx = xxx** 来更新实例选项。
 
 当我们更新实例选项时，如果拖放交互正在进行，vdnd 将**不会立即应用最新的实例选项**，而是会在拖放交互结束后应用。反之，vdnd 将会立即应用。
 

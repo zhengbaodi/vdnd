@@ -1,5 +1,7 @@
 # Introduction
 
+> To better understand the content of this chapter, please first read the API#Components chapter in the [README](../../README.md).
+
 We can customize details of the drag and drop interaction by **DndInstance** that also provides some helpful methods.
 
 Vdnd provides three functions to create **DndInstance**: `useNativeDnd`, `useMouseDnd` and `useTouchDnd`, they are used for `NativeDnd`, `MouseDnd` and `TouchDnd` respectively. In addition, `useDnd` is also provided, it distinguishs type of created instance by the `type` option.
@@ -8,7 +10,7 @@ Vdnd provides three functions to create **DndInstance**: `useNativeDnd`, `useMou
 
 # Instance options
 
-The options are used for creating **DndInstance**, and it can be `reactive` or `shallowReactive`.
+The options are used for creating **DndInstance**.
 
 In the following, the mentioned options are general option by default, unless special instructions.
 
@@ -143,7 +145,7 @@ Note: this option only functions for `useMouseDnd`.
 | ------ | ---------------- |
 | object | instance options |
 
-Vdnd supports triggering side effects through **instance.options=xxx**.
+Vdnd supports updating instance options through **instance.options=xxx** and **instance.options.xxx = xxx**.
 
 When we update instance options, if the interaction is in progress, vdnd **will not apply the newest intance options immediately**, but after the end of the interaction.
 

@@ -42,6 +42,10 @@ const onDrop = (e: DropEvent<number>) => {
 
 [在线示例](http://zbd329.top/vdnd/?lang=zh-cn&index=0)
 
+# API
+
+[/packages/v3/README.zh-cn.md](./packages/v3/README.zh-cn.md)
+
 # 感谢
 
 [@shopify/draggable](https://github.com/Shopify/draggable)为 vdnd 带来了灵感。

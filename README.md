@@ -42,6 +42,10 @@ const onDrop = (e: DropEvent<number>) => {
 
 [online examples](https://zhengbaodi.github.io/vdnd/?lang=en&index=0)
 
+# API
+
+[/packages/v3/README.md](./packages/v3/README.md).
+
 # Thanks
 
 [@shopify/draggable](https://github.com/Shopify/draggable) brings inspiration to vdnd.

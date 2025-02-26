@@ -48,50 +48,63 @@ function createRuntimeRollupPlugins(babelPresets, sourcemap) {
 
 const input = 'index.ts';
 /** @type {import('rollup').RollupOptions[]} */
-const rollupRuntimeOptions = [
-  {
-    input,
-    external,
-    output: {
-      file: './dist/index.cjs',
-      format: 'cjs',
-      sourcemap: false,
-    },
-    plugins: createRuntimeRollupPlugins(['typescript'], false),
-  },
-  {
-    input,
-    external,
-    output: {
-      file: './dist/index.mjs',
-      format: 'esm',
-      sourcemap: DEV,
-    },
-    plugins: createRuntimeRollupPlugins(['typescript'], DEV),
-  },
-  {
-    input,
-    external,
-    output: [
+const rollupRuntimeOptions = DEV
+  ? [
       {
-        file: './dist/index.iife.js',
-        format: 'iife',
-        sourcemap: false,
-        name: PKG_NAME,
-        globals: iifeGlobals,
+        input,
+        external,
+        output: {
+          file: './dist/index.mjs',
+          format: 'esm',
+          sourcemap: true,
+        },
+        plugins: createRuntimeRollupPlugins(['typescript'], true),
+      },
+    ]
+  : [
+      {
+        input,
+        external,
+        output: {
+          file: './dist/index.cjs',
+          format: 'cjs',
+          sourcemap: false,
+        },
+        plugins: createRuntimeRollupPlugins(['typescript'], false),
       },
       {
-        file: './dist/index.iife.min.js',
-        format: 'iife',
-        sourcemap: false,
-        plugins: [terser({ sourceMap: false })],
-        name: PKG_NAME,
-        globals: iifeGlobals,
+        input,
+        external,
+        output: {
+          file: './dist/index.mjs',
+          format: 'esm',
+          sourcemap: false,
+        },
+        plugins: createRuntimeRollupPlugins(['typescript'], false),
       },
-    ],
-    plugins: createRuntimeRollupPlugins(['env', 'typescript'], false),
-  },
-];
+      {
+        input,
+        external,
+        output: [
+          {
+            file: './dist/index.iife.js',
+            format: 'iife',
+            sourcemap: false,
+            name: PKG_NAME,
+            globals: iifeGlobals,
+          },
+          {
+            file: './dist/index.iife.min.js',
+            format: 'iife',
+            sourcemap: false,
+            plugins: [terser({ sourceMap: false })],
+            name: PKG_NAME,
+            globals: iifeGlobals,
+          },
+        ],
+        plugins: createRuntimeRollupPlugins(['env', 'typescript'], false),
+      },
+    ];
 
 /** @type {import('rollup').RollupOptions} */
 const rollupDtsOptions = {

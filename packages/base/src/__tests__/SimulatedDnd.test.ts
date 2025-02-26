@@ -10,7 +10,10 @@ import {
 } from 'vitest';
 import { Plugin } from '../plugins';
 import SimulatedDnd from '../SimulatedDnd';
-import { DefaultEventSuppressor, EventSuppressor } from '../EventSuppressor';
+import {
+  EventSuppressor,
+  EventSuppressorEnvironment,
+} from '../EventSuppressor';
 import {
   DragSimulator,
   TouchDragSimulator,
@@ -165,26 +168,25 @@ describe('exclusive interactions', () => {
   });
 
   it('should suppress events while dragging', async () => {
-    function initEventSuppressor(suppressor: EventSuppressor) {
-      suppressor.suppress('keydown', {
+    const env = new EventSuppressorEnvironment({
+      keydown: {
         preventDefault: true,
         stopPropagation: true,
         stopImmediatePropagation: true,
-      });
-      return suppressor;
-    }
+      },
+    });
     const iterate = createTestEnvIterator(null, [
       {
         ...mouseOptions,
-        eventSuppressor: initEventSuppressor(new DefaultEventSuppressor()),
+        eventSuppressor: new EventSuppressor(env, 'mouse'),
       },
       {
         ...touchOptions,
-        eventSuppressor: initEventSuppressor(new DefaultEventSuppressor()),
+        eventSuppressor: new EventSuppressor(env, 'touch'),
       },
     ]);
     await iterate(async ({ simulator, source }) => {
-      DefaultEventSuppressor.isTrustedEvent = () => true;
+      EventSuppressorEnvironment.isTrustedEvent = () => true;
       await simulator.dragstart(source);
       const fn = vi.fn();
 

@@ -11,7 +11,7 @@ import AbstractDnd from '../../AbstractDnd';
 import SimulatedDnd, { SimulatedDndOptions } from '../../SimulatedDnd';
 import NativeDnd, { NativeDndOptions } from '../../NativeDnd';
 import { TouchSimulator, MouseSimulator } from '../../simulators';
-import { DefaultEventSuppressor } from '../../EventSuppressor';
+import { EventSuppressorEnvironment } from '../../EventSuppressor';
 import {
   DragEvent,
   DragStartEvent,
@@ -161,7 +161,7 @@ export function createTestEnvIterator(
   markup: string | null,
   options: SimulatedDndOptions[]
 ) {
-  const initialIsTrustedEvent = DefaultEventSuppressor.isTrustedEvent;
+  const initialIsTrustedEvent = EventSuppressorEnvironment.isTrustedEvent;
   const _beforeEach = () => {
     vi.useFakeTimers();
     TouchDragSimulator.USE_FAKE_TIMERS = true;
@@ -169,7 +169,7 @@ export function createTestEnvIterator(
   const _afterEach = async (env?: TestEnv) => {
     vi.useRealTimers();
     TouchDragSimulator.USE_FAKE_TIMERS = false;
-    DefaultEventSuppressor.isTrustedEvent = initialIsTrustedEvent;
+    EventSuppressorEnvironment.isTrustedEvent = initialIsTrustedEvent;
     if (env) releaseTestEnv(env);
   };
 

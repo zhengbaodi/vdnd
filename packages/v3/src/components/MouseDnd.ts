@@ -8,8 +8,8 @@ import {
 import {
   SimulatedDnd,
   MouseSimulator,
-  DefaultEventSuppressor,
-  initEventSuppressor,
+  EventSuppressor,
+  EventSuppressorEnvironment,
 } from '@vdnd/base';
 import {
   useBaseDnd,
@@ -27,10 +27,77 @@ import type {
   DndEventTableForMouse,
 } from '../types';
 
-// initEventSuppressor should be called as early as possible
-const eventSuppressor = initEventSuppressor(
-  new DefaultEventSuppressor(document)
-);
+class MouseDndEventSuppressor {
+  static uid = 1;
+
+  // The Concepts:
+  // ActualUIEvent: the event was created by the 'user action'. (https://developer.mozilla.org/en-US/docs/Web/API/Event/isTrusted)
+
+  // Browser will suppress UI Events while dragging,
+  // after testing, it was found that browser only suppresses the ActualUIEvent except 'focus', 'focusin', 'focusout', 'blur'.
+
+  // The known UI Events: dblclick,mousedown,mouseenter,mouseout,mouseleave,mouseover,mousemove,mouseup,touchstart,touchmove,touchend,touchcancel,blur,focusout,focus,focusin,keypress,keydown,keyup,mousewheel,beforeinput,input,compositionstart,compositionupdate,compositionend
+  // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent
+
+  // However, while the dragging, the following UI Events can only be triggered by 'dispatchEvent' and  cannot be triggered by the 'user action'：
+  // click,dblclick,mousedown,mouseup,touchstart,touchend,touchcancel,blur,focusout,focus,focusin,beforeinput,input,compositionstart,compositionupdate,compositionend
+  // such as, we can't type words while dragging.
+  static env = new EventSuppressorEnvironment({
+    mouseenter: {
+      preventDefault: true,
+      stopPropagation: true,
+      stopImmediatePropagation: true,
+    },
+    mouseout: {
+      preventDefault: true,
+      stopPropagation: true,
+      stopImmediatePropagation: true,
+    },
+    mouseleave: {
+      preventDefault: true,
+      stopPropagation: true,
+      stopImmediatePropagation: true,
+    },
+    mouseover: {
+      preventDefault: true,
+      stopPropagation: true,
+      stopImmediatePropagation: true,
+    },
+    mousemove: {
+      // MouseSimulator depends on this
+      preventDefault: false,
+      stopPropagation: true,
+      stopImmediatePropagation: true,
+    },
+    keypress: {
+      preventDefault: true,
+      stopPropagation: true,
+      stopImmediatePropagation: true,
+    },
+    keydown: {
+      preventDefault: true,
+      stopPropagation: true,
+      stopImmediatePropagation: true,
+    },
+    keyup: {
+      preventDefault: true,
+      stopPropagation: true,
+      stopImmediatePropagation: true,
+    },
+    mousewheel: {
+      preventDefault: true,
+      stopPropagation: true,
+      stopImmediatePropagation: true,
+    },
+  });
+
+  static create() {
+    return new EventSuppressor(
+      MouseDndEventSuppressor.env,
+      `mouse-dnd-${MouseDndEventSuppressor.uid++}`
+    );
+  }
+}
 
 const MouseDnd = defineComponent({
   name: 'MouseDnd',
@@ -71,7 +138,9 @@ const MouseDnd = defineComponent({
         dropzone,
         handle,
         simulator: MouseSimulator,
-        eventSuppressor: suppressUIEvent ? eventSuppressor : void 0,
+        eventSuppressor: suppressUIEvent
+          ? MouseDndEventSuppressor.create()
+          : void 0,
         mirror: {
           ...mirror,
           appendTo:

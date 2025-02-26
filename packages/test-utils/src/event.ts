@@ -3,11 +3,7 @@ import {
   defaultMouseEventOptions,
 } from './constants';
 
-export function triggerEvent(
-  element: EventTarget,
-  type: string,
-  data: { [key: string]: any } = {}
-) {
+export function createEvent(type: string, data: { [key: string]: any } = {}) {
   const event = document.createEvent('Event');
   event.initEvent(type, true, true);
 
@@ -19,10 +15,18 @@ export function triggerEvent(
     }
   }
 
+  return event;
+}
+
+export function triggerEvent(
+  element: EventTarget,
+  type: string,
+  data: { [key: string]: any } = {}
+) {
+  const event = createEvent(type, data);
   if (element instanceof Element) {
     element.dispatchEvent(event);
   }
-
   return event;
 }
 

@@ -7,7 +7,7 @@ import {
 } from '../__helpers__/test-env';
 import { h, nextTick, ref } from 'vue';
 import { ensureArray } from '@vdnd/shared';
-import { SimulatedDnd, DefaultEventSuppressor } from '@vdnd/base';
+import { SimulatedDnd, EventSuppressorEnvironment } from '@vdnd/base';
 import {
   DndType,
   DndProvider,
@@ -28,7 +28,7 @@ import {
 const body = new DOMWrapper(document.body);
 
 beforeAll(() => {
-  vi.spyOn(DefaultEventSuppressor, 'isTrustedEvent').mockImplementation(
+  vi.spyOn(EventSuppressorEnvironment, 'isTrustedEvent').mockImplementation(
     () => true
   );
 });

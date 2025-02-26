@@ -196,12 +196,13 @@ export default class SimulatedDnd extends AbstractDnd<SimulatorDndEventTable> {
     this.simulator?.detach();
     const env: SimulatorWorkingEnv = this.eventSuppressor
       ? {
-          addEventListener: this.eventSuppressor.addEventListenerSafely.bind(
+          addEventListener: this.eventSuppressor.addAliveEventListener.bind(
             this.eventSuppressor
           ),
-          removeEventListener: this.eventSuppressor.removeEventListener.bind(
-            this.eventSuppressor
-          ),
+          removeEventListener:
+            this.eventSuppressor.removeAliveEventListener.bind(
+              this.eventSuppressor
+            ),
         }
       : document;
     this.simulator = new Simulator(

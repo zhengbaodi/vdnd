@@ -1,6 +1,3 @@
 pnpm publish --access=public -r --no-git-checks
-pnpm publish --access=public -r --no-git-checks --no-git-checks
 pnpm publish --access=public -r --no-git-checks --tag=rc
-pnpm publish --access=public -r --no-git-checks --tag=rc --no-git-checks
 pnpm publish --access=public -r --no-git-checks --tag=beta
-pnpm publish --access=public -r --no-git-checks --tag=beta --no-git-checks

@@ -57,9 +57,14 @@ const onDrop = (e: DropEvent<number>) => {
   }
 };
 
-const tip = useI18n({
+const tip1 = useI18n({
   en: 'Drag here',
   'zh-cn': '拖到这里来',
+});
+
+const tip2 = useI18n({
+  en: (moveable: boolean) => `can only ${moveable ? 'move' : 'copy'}`,
+  'zh-cn': (moveable: boolean) => `只能${moveable ? '移动' : '复制'}我`,
 });
 </script>
 
@@ -77,11 +82,11 @@ const tip = useI18n({
         label="left"
         :value="index"
       >
-        <div class="tip">can only {{ moveable ? 'move' : 'copy' }}</div>
+        <div class="tip">{{ tip2(moveable) }}</div>
       </DndSource>
     </div>
     <DndDropzone label="right">
-      <div v-if="!right.length" class="empty">{{ tip }}</div>
+      <div v-if="!right.length" class="empty">{{ tip1 }}</div>
       <div class="right-boxes">
         <div v-for="(_, index) in right" :key="index" class="right-box">
           {{ index + 1 }}

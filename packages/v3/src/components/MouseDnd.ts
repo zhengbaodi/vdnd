@@ -42,7 +42,7 @@ class MouseDndEventSuppressor {
   // However, while the dragging, the following UI Events can only be triggered by 'dispatchEvent' and  cannot be triggered by the 'user action'：
   // click,dblclick,mousedown,mouseup,touchstart,touchend,touchcancel,blur,focusout,focus,focusin,beforeinput,input,compositionstart,compositionupdate,compositionend
   // such as, we can't type words while dragging.
-  static env = new EventSuppressorEnvironment({
+  static env = /*@__PURE__*/ new EventSuppressorEnvironment({
     mouseenter: {
       preventDefault: true,
       stopPropagation: true,

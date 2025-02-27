@@ -50,12 +50,12 @@ export default abstract class Simulator<E extends Event = Event> {
   protected source: Element | null = null;
 
   constructor(
-    protected env: SimulatorWorkingEnv,
-    protected container: HTMLElement,
-    protected options: SimulatorOptions,
-    protected onDragStrat: (e: DragStartSimulatorEvent) => void,
-    protected onDragMove: (e: DragMoveSimulatorEvent) => void,
-    protected onDragEnd: (e: DragEndSimulatorEvent) => void
+    protected readonly env: SimulatorWorkingEnv,
+    protected readonly container: HTMLElement,
+    protected readonly options: SimulatorOptions,
+    protected readonly onDragStrat: (e: DragStartSimulatorEvent) => void,
+    protected readonly onDragMove: (e: DragMoveSimulatorEvent) => void,
+    protected readonly onDragEnd: (e: DragEndSimulatorEvent) => void
   ) {}
 
   protected getSource(startEvent: Event) {

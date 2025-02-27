@@ -10,7 +10,7 @@ export class ListenerProxy {
   private destoryed = false;
   constructor(
     public readonly type: string,
-    private listener: Listener,
+    private readonly listener: Listener,
     public readonly options: AddEventListenerOptions
   ) {
     if (this.options.signal) {
@@ -234,11 +234,11 @@ export class EventSuppressorEnvironment {
  * or add listeners before the instance starts work.
  */
 export class EventSuppressor {
-  private nativeListenerProxys = new Set<ListenerProxy>();
+  private readonly nativeListenerProxys = new Set<ListenerProxy>();
 
   constructor(
-    private env: EventSuppressorEnvironment,
-    private scope: string
+    private readonly env: EventSuppressorEnvironment,
+    private readonly scope: string
   ) {}
 
   enable() {

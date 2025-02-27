@@ -68,7 +68,7 @@ export default class SimulatedDnd extends AbstractDnd<SimulatorDndEventTable> {
   /**
    * This is a mock: browser will suppress ui events while dragging.
    */
-  private eventSuppressor: EventSuppressor | null = null;
+  private readonly eventSuppressor: EventSuppressor | null = null;
 
   /**
    * Triggers 'drag' event at regular interval
@@ -83,7 +83,7 @@ export default class SimulatedDnd extends AbstractDnd<SimulatorDndEventTable> {
   private clearIntervalTaskForDragOver = emptyFn;
 
   constructor(
-    protected container: HTMLElement,
+    protected readonly container: HTMLElement,
     /** @readonly */
     public readonly options: SimulatedDndOptions
   ) {

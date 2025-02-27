@@ -2,12 +2,12 @@ import AbstractEvent from '../AbstractEvent';
 
 export abstract class BaseSimulatorEvent extends AbstractEvent {
   constructor(
-    public target: Element,
-    public source: Element,
-    public container: HTMLElement,
-    public clientX: number,
-    public clientY: number,
-    public originalEvent: Event
+    public readonly target: Element,
+    public readonly source: Element,
+    public readonly container: HTMLElement,
+    public readonly clientX: number,
+    public readonly clientY: number,
+    public readonly originalEvent: Event
   ) {
     super();
   }

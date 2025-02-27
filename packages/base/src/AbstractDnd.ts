@@ -36,7 +36,7 @@ export default abstract class AbstractDnd<
   protected currentOver: Element | null = null;
 
   constructor(
-    protected container: HTMLElement,
+    protected readonly container: HTMLElement,
     /** @readonly */
     public readonly options: AbstractDndOptions
   ) {

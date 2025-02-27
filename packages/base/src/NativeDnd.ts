@@ -71,7 +71,7 @@ export default class NativeDnd extends AbstractDnd {
   private trigger: Element | null = null;
 
   constructor(
-    protected container: HTMLElement,
+    protected readonly container: HTMLElement,
     /** @readonly */
     public readonly options: NativeDndOptions
   ) {

@@ -58,7 +58,7 @@ const defaultOptions: MirrorOptions = {
  * Mirror plugin which controls the mirror positioning while dragging
  */
 export class Mirror extends Plugin {
-  private options: MirrorOptions;
+  private readonly options: MirrorOptions;
 
   /**
    * Scroll offset for touch devices because the mirror is positioned fixed

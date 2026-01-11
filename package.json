@@ -1,50 +1,23 @@
 {
   "name": "vdnd",
-  "version": "1.0.0-rc.3",
   "private": true,
   "type": "module",
+  "version": "1.0.0-rc.4",
   "scripts": {
-    "test": "vitest --coverage.enabled=false",
-    "test:coverage": "vitest --coverage.enabled=true",
-    "check:type": "tsc --noEmit",
-    "check:v2:type": "tsc --project tsconfig.v2.json",
-    "check:version": "node ./scripts/check-version.mjs",
-    "build:npm": "pnpm --filter \"@vdnd/v*\" build",
-    "build:v2": "pnpm --filter \"@vdnd/v2\" build",
-    "build:v3:dev": "cross-env NODE_ENV=development pnpm --filter \"@vdnd/v3\" build",
-    "postinstall": "pnpm build:v2 && pnpm build:v3:dev",
-    "build:github-pages": "rimraf ./docs && pnpm --filter \"@vdnd/v3\" build && pnpm --filter \"examples\" build",
-    "format": "prettier --write \"./(packages|types)/**/*.{cjs,mjs,js,ts,vue}\" \"./**/*.md\"",
-    "pack": "node ./scripts/pack.mjs",
-    "prepublishOnly": "pnpm check:version && pnpm check:type && pnpm test && pnpm build:npm && pnpm check:v2:type"
+    "type-check": "pnpm --filter * type-check",
+    "postinstall": "cross-env NODE_ENV=development pnpm build",
+    "build": "pnpm --filter @vdnd/v2... --filter @vdnd/v3... build",
+    "format": "prettier --write \"./(packages|test)/**/*.{js,ts,vue,css}\" \"./**/*.md\""
   },
   "devDependencies": {
-    "@babel/core": "^7.26.7",
-    "@babel/preset-env": "^7.26.7",
-    "@babel/preset-typescript": "^7.26.0",
-    "@rollup/plugin-alias": "^5.1.1",
-    "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-node-resolve": "^16.0.0",
-    "@rollup/plugin-replace": "^6.0.2",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@types/node": "^20.17.16",
-    "@vdnd/base": "workspace:*",
-    "@vdnd/shared": "workspace:*",
-    "@vdnd/test-utils": "workspace:*",
-    "@vitest/coverage-v8": "^2.1.8",
-    "@vue/test-utils": "^2.4.6",
-    "compressing": "^1.10.1",
+    "@rollup/plugin-typescript": "^12.3.0",
     "cross-env": "^7.0.3",
-    "jsdom": "^26.0.0",
     "prettier": "^3.4.2",
-    "recursive-copy": "^2.0.14",
-    "rimraf": "^6.0.1",
+    "rimraf": "~5.0.10",
     "rollup": "^4.32.0",
-    "rollup-plugin-dts": "^6.1.1",
-    "terser": "^5.37.0",
-    "tslib": "^2.8.1",
-    "typescript": "^5.7.3",
-    "vitest": "^2.1.8"
+    "rollup-plugin-dts": "^6.3.0",
+    "typescript": "~5.9.3"
   },
   "license": "MIT",
   "author": {
@@ -62,6 +35,7 @@
   },
   "packageManager": "pnpm@9.15.3",
   "engines": {
-    "node": "20.18.1"
+    "node": "20.19.6"
   }
 }
+

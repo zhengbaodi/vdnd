@@ -1,6 +1,0 @@
-{
-  "name": "@vdnd/shared",
-  "private": true,
-  "type": "module",
-  "module": "./index.ts"
-}

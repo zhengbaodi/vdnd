@@ -1,0 +1,28 @@
+{
+  "name": "@vdnd/demo.css",
+  "version": "1.0.0-rc.1",
+  "type": "module",
+  "description": "The demo css for @vdnd/v3.",
+  "module": "demo.css",
+  "keywords": [
+    "drag and drop"
+  ],
+  "files": [
+    "demo.css"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "zhengbaodi",
+    "email": "zhengbaodi329@outlook.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zhengbaodi/vdnd",
+    "directory": "/packages/demo.css"
+  },
+  "homepage": "https://github.com/zhengbaodi/vdnd",
+  "bugs": {
+    "url": "https://github.com/zhengbaodi/vdnd/issues",
+    "email": "zhengbaodi329@outlook.com"
+  }
+}

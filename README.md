@@ -1,51 +1,23 @@
-# Introduction
+# vdnd
 
-Easy used vue drag and drop component library.
+A Vue drag-and-drop(DND) component library that is easy to use.
 
-Vdnd only abstracts that what was dragged and where it was dropped, will not implement any actual drop effects.
+## API
 
-# Example
+See [@vdnd/v3](./packages/v3/README.md).
 
-```typescript
-import { ref } from 'vue';
-import { push, remove } from '@vdnd/v3';
-import { useMouseDnd, MouseDnd, DndSource, DndDropzone } from '@vdnd/v3';
-import type { DropEvent } from '@vdnd/v3';
+## Develop
 
-const dnd = useMouseDnd<number>({
-  strict: true,
-});
-
-const left = ref([1, 2, 3]);
-const right = ref<number[]>([]);
-
-const onDrop = (e: DropEvent<number>) => {
-  if (e.source.label === 'left' && e.dropzone.label === 'right') {
-    push(right, remove(left, e.source.value!));
-  }
-};
+```cmd
+cd ./packages/native && pnpm dev
+cd ./packages/v3 && pnpm dev
+cd ./test/v3 && pnpm dev
 ```
 
-```html
-<MouseDnd :instance="dnd" class="example" @drop="onDrop">
-  <div>
-    <DndSource v-for="(number, index) in left" :key="index" label="left" :value="index">
-      {{ number }}
-    </DndSource>
-  </div>
-  <DndDropzone label="right">
-    <div v-if="!right.length" class="empty">Drag Here</div>
-    <div v-for="(number, index) in right" :key="index" class="right-box">{{ number }}</div>
-  </DndDropzone>
-</MouseDnd>
-```
+## Code for @vdnd/v2
 
-[online examples](https://zhengbaodi.github.io/vdnd/?lang=en&index=0)
+Manually integrate the features from `@vdnd/v3` into `@vdnd/v2`.
 
-# API
+## Test
 
-[/packages/v3/README.md](./packages/v3/README.md).
-
-# Thanks
-
-[@shopify/draggable](https://github.com/Shopify/draggable) brings inspiration to vdnd.
+Manually test in the browser and use the `coverage` feature provided by the browser devtool to ensure there is no unused code.

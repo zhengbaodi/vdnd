@@ -1,120 +1,44 @@
-import { defineConfig } from 'rollup';
-import terser from '@rollup/plugin-terser';
-import replace from '@rollup/plugin-replace';
-import alias from '@rollup/plugin-alias';
+import dts from 'rollup-plugin-dts';
 import resolve from '@rollup/plugin-node-resolve';
-import { babel } from '@rollup/plugin-babel';
-import { dts } from 'rollup-plugin-dts';
-import { fileURLToPath } from 'node:url';
-import { resolve as resolvePath } from 'node:path';
+import typescript from '@rollup/plugin-typescript';
 
-const PKG_NAME = 'Vdnd2';
-const external = ['vue'];
-const iifeGlobals = {
-  vue: 'Vue',
-};
-const __dirname = resolvePath(fileURLToPath(import.meta.url), '../../../');
+const __DEV__ = process.env.NODE_ENV === 'development';
 
-/**
- * @param {('env' | 'typescript')[]} babelPresets
- * @param {boolean} sourcemap
- */
-function createRuntimeRollupPlugins(babelPresets, sourcemap) {
-  return [
-    resolve({
-      extensions: ['.ts'],
-    }),
-    replace({
-      IS_VUE2: 'true',
-      preventAssignment: true,
-    }),
-    alias({
-      entries: {
-        '@vdnd': `${__dirname}/packages`,
-      },
-    }),
-    babel({
-      extensions: ['.ts'],
-      babelHelpers: 'bundled',
-      presets: ['@babel/preset-env', '@babel/preset-typescript'].filter(
-        (name) =>
-          babelPresets.some((preset) => `@babel/preset-${preset}` === name)
-      ),
-      sourceMaps: sourcemap,
-    }),
-  ];
-}
+const input = 'src/index.ts';
+const external = ['vue', '@vdnd/native'];
 
-const input = 'index.ts';
 /** @type {import('rollup').RollupOptions[]} */
-const rollupRuntimeOptions = [
+const options = [
   {
     input,
+    output: {
+      file: './dist/index.js',
+      format: 'esm',
+      sourcemap: __DEV__,
+    },
     external,
-    output: [
-      {
-        file: './dist/index.cjs',
-        format: 'cjs',
-        sourcemap: false,
-      },
-      {
-        file: './dist/index.mjs',
-        format: 'esm',
-        sourcemap: false,
-      },
+    plugins: [
+      typescript({
+        tsconfig: './tsconfig.json',
+        removeComments: true,
+      }),
+      resolve({
+        extensions: ['.ts'],
+      }),
     ],
-    plugins: createRuntimeRollupPlugins(['typescript'], false),
   },
   {
     input,
+    output: {
+      file: './dist/index.d.ts',
+    },
     external,
-    output: [
-      {
-        file: './dist/index.iife.js',
-        format: 'iife',
-        sourcemap: false,
-        name: PKG_NAME,
-        globals: iifeGlobals,
-      },
-      {
-        file: './dist/index.iife.min.js',
-        format: 'iife',
-        sourcemap: false,
-        plugins: [terser({ sourceMap: false })],
-        name: PKG_NAME,
-        globals: iifeGlobals,
-      },
+    plugins: [
+      dts({
+        tsconfig: './tsconfig.json',
+      }),
     ],
-    plugins: createRuntimeRollupPlugins(['env', 'typescript'], false),
-  },
-  {
-    input,
-    external,
-    output: [
-      {
-        file: './test/libs/vdnd2.js',
-        format: 'iife',
-        sourcemap: true,
-        name: PKG_NAME,
-        globals: iifeGlobals,
-      },
-    ],
-    plugins: createRuntimeRollupPlugins(['typescript'], true),
   },
 ];
 
-/** @type {import('rollup').RollupOptions} */
-const rollupDtsOptions = {
-  input,
-  external,
-  output: {
-    file: './dist/index.d.ts',
-  },
-  plugins: [
-    dts({
-      tsconfig: '../../tsconfig.v2.json',
-    }),
-  ],
-};
-
-export default defineConfig([...rollupRuntimeOptions, rollupDtsOptions]);
+export default options;

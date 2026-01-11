@@ -1,0 +1,28 @@
+{
+  "name": "@vdnd/v2-test",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "postinstall": "pnpm genereate",
+    "genereate": "node ./scripts/generate.js",
+    "type-check": "tsc --noEmit && vue-tsc --noEmit",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vdnd/demo.css": "workspace:*",
+    "@vdnd/v2": "workspace:*",
+    "vue": "catalog:vue2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "@types/through2": "^2.0.41",
+    "@vitejs/plugin-vue2": "^2.3.4",
+    "@vue/tsconfig": "^0.5.1",
+    "recursive-copy": "^2.0.14",
+    "through2": "^4.0.2",
+    "vite": "^7.2.4",
+    "vue-tsc": "^3.1.4"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "@vdnd/native",
+  "version": "1.0.0-rc.1",
+  "type": "module",
+  "description": "The DOM layer implementation for @vdnd/v3.",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [
+    "drag and drop"
+  ],
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development pnpm build --watch",
+    "prebuild": "rimraf ./dist",
+    "build": "rollup -c ./rollup.config.js",
+    "type-check": "tsc --noEmit",
+    "prepack": "pnpm type-check && pnpm run build"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "zhengbaodi",
+    "email": "zhengbaodi329@outlook.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zhengbaodi/vdnd",
+    "directory": "/packages/native"
+  },
+  "homepage": "https://github.com/zhengbaodi/vdnd",
+  "bugs": {
+    "url": "https://github.com/zhengbaodi/vdnd/issues",
+    "email": "zhengbaodi329@outlook.com"
+  }
+}

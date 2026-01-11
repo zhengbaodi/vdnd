@@ -1,275 +1,281 @@
-# Introduction
+# @vdnd/v3
 
-> The original version of the document is in [Chinese](./README.zh-cn.md).
+A Vue drag-and-drop(DND) component library that is easy to use.
 
-Easy used vue drag and drop component library.
+## Features
 
-Vdnd only abstracts that what was dragged and where it was dropped, will not implement any actual drop effects.
+It allows us to split the entire DND interaction logic into several sub-interaction logics, and each sub-interaction logic groups a set of related logics.
 
-# Example
+If we adopt an event-driven approach to handle DND interaction logic, the interaction logic will be dispersed among various handlers, even though they are interrelated.
 
-```typescript
-import { ref } from 'vue';
-import { push, remove } from '@vdnd/v3';
-import { useMouseDnd, MouseDnd, DndSource, DndDropzone } from '@vdnd/v3';
-import type { DropEvent } from '@vdnd/v3';
+## Installation
 
-const dnd = useMouseDnd<number>({
-  strict: true,
-});
-
-const left = ref([1, 2, 3]);
-const right = ref<number[]>([]);
-
-const onDrop = (e: DropEvent<number>) => {
-  if (e.source.label === 'left' && e.dropzone.label === 'right') {
-    push(right, remove(left, e.source.value!));
-  }
-};
+```powershell
+npm i @vdnd/v3;
+npm i @vdnd/demo.css --no-save;
 ```
+
+## Usage
 
 ```html
-<MouseDnd :instance="dnd" class="example" @drop="onDrop">
-  <div>
-    <DndSource v-for="(number, index) in left" :key="index" label="left" :value="index">
-      {{ number }}
-    </DndSource>
-  </div>
-  <DndDropzone label="right">
-    <div v-if="!right.length" class="empty">Drag Here</div>
-    <div v-for="(number, index) in right" :key="index" class="right-box">{{ number }}</div>
-  </DndDropzone>
-</MouseDnd>
+<DndContainer :model="dnd">
+  <DndSource label="text">text source</DndSource>
+  <DndSource label="image">image source</DndSource>
+  <DndDropzone label="canvas">canvas</DndDropzone>
+</DndContainer>
 ```
 
-[online examples](https://zhengbaodi.github.io/vdnd/?lang=en&index=0)
-
-# API
-
-## Plugins
-
-### NativeDndPlugin
-
-Registers global components: `NativeDnd`, `DndSource`, `DndDropzone`, `DndHandle`.
-
-### MouseDndPlugin
-
-Registers global components: `MouseDnd`, `DndSource`, `DndDropzone`, `DndHandle`.
-
-### TouchDndPlugin
-
-Registers global components: `TouchDnd`, `DndSource`, `DndDropzone`, `DndHandle`.
-
-## Components
-
-### DndProvider
-
-`DndProvider` is used for rendering **dnd container**: only the drag and drop interactions from within the container will be perceived by `DndProvider`.
-
-Vdnd provides three types of `DndProviders`: `NativeDnd`, `MouseDnd` and`TouchDnd`, they use different events to perceive the interaction, such as:
-
-- `NativeDnd` considers the occurrence of `dragstart` event as the start of the interaction;
-- `MouseDnd` considers the consecutive occurrences of `mousedown` and `mousemove` events as the start of the interaction;
-- `TouchDnd` considers the consecutive occurrences of `touchstart` and `touchmove` events as the start of the interaction.
-
-#### Props
-
-| Name     | Type   | Description                                                                 | Required | Default |
-| -------- | ------ | --------------------------------------------------------------------------- | -------- | ------- |
-| tag      | string | html tag used for rendering **dnd container**                               | false    | 'div'   |
-| instance | object | [DndInstance(Drag and Drop Interaction Instance).md](./docs/en/instance.md) | true     |         |
-
-#### Slots
-
-| Name    | Description                         | Parameters | Fallback Content |
-| ------- | ----------------------------------- | ---------- | ---------------- |
-| default | the child node of **dnd container** | none       | empty            |
-
-#### Events
-
-| Name         | Description                                             |
-| ------------ | ------------------------------------------------------- |
-| drag         | `API#DndSource`                                         |
-| drag:start   | `API#DndSource`                                         |
-| drag:prevent | `API#DndSource`                                         |
-| drag:enter   | `API#DndDropzone`                                       |
-| drag:over    | `API#DndDropzone`                                       |
-| drag:leave   | `API#DndDropzone`                                       |
-| drop         | `API#DndDropzone`                                       |
-| drag:end     | `API#DndDropzone`                                       |
-| initialized  | emited after initialization completion of `DndProvider` |
-
-See also [Drag and Drop Interaction Events.md](./docs/en/event.md)。
-
-#### Exposes
-
-`DndProvider` does not use `expose` to expose any contents.
-
-### DndSource
-
-`DndSource` is used for rendering **source**: `DndProvider` can only perceive the occurrence of dragging when attempting to drag the **source** in **dnd container**.
-
-#### Props
-
-| Name      | Type    | Description                                                          | Required | Default                            |
-| --------- | ------- | -------------------------------------------------------------------- | -------- | ---------------------------------- |
-| tag       | string  | html tag used for rendering **source**                               | false    | 'div'                              |
-| label     | string  | binds a label for **source**, usually used for grouping              | false    |                                    |
-| value     | any     | binds a value for **source**, which is usually unique within a group | false    |                                    |
-| draggable | boolean | is draggable or not                                                  | false    | true                               |
-| dropzone  | boolean | is also **dropzone** or not                                          | false    | false                              |
-| droppable | boolean | is droppable or not                                                  | false    | false; true, if `dropzone` is true |
-
-When we try to drag a draggable **source**, the interaction starts, `DndProvider` emits `drag:start` event and makes the **source** as **the current source**. On the contrary, the interaction is prevented, and `DndProvider` emits `drag:prevent` event. After the interaction starts, `DndProvider` will emit `drag` event at regular intervals.
-
-When `DndProvider` emits an event, it takes the relevant **source** as one of parameters, and we can access its `label` and `value`: they can help us quickly identify the identity of the **source** and determine subsequent actions accordingly.
-
-> The `label` property only functions as a marker, vdnd does not have any internal logics regarding grouping.
-
-**Source** can also act as **dropzone**, which brings more possibilities. Later on, we will learn about **dropzone**.
-
-#### Slots
-
-| Name    | Description                  | Parameters | Fallback Content |
-| ------- | ---------------------------- | ---------- | ---------------- |
-| default | the child node of **source** | none       | empty            |
-
-#### Events
-
-`DndSource` does not emit any events.
-
-#### Exposes
-
-`DndSource` does not use `expose` to expose any contents.
-
-### DndDropzone
-
-`DndDropzone` is used for rendering **dropzone**: normally, the actual drop effect can only be produced when we end the interaction on the **dropzone**, such as moving **the current source** into the **dropzone** where the interaction ends.
-
-#### Props
-
-| Name      | Type    | Description                                                            | Required | Default |
-| --------- | ------- | ---------------------------------------------------------------------- | -------- | ------- |
-| tag       | string  | html tag used for rendering **dropzone**                               | false    | 'div'   |
-| label     | string  | binds a label for **dropzone**, usually used for grouping              | false    |         |
-| value     | any     | binds a value for **dropzone**, which is usually unique within a group | false    |         |
-| droppable | boolean | is droppable or not                                                    | false    | true    |
-
-After the interaction starts, when we use a pointing device (such as mouse) to point to a **dropzone**, `DndProvider` will emit `drag:enter` event and make the **dropzone** as **the current drop target**. When we cancel the pointing to **the current drop target**, `DndProvider` will emit `drag:leave` event.
-
-When the interaction is in progress, if **the current drop target** exists, `DndProvider` will emit `drag:over` event at regular intervals.
-
-At the end of the interaction, if **the current drop target** does not exist, `DndProvider` will only emit `drag:end` event. Otherwise `DndProvider` will emit `drop` or `drag:leave` event based on whether **the current drop target** is droppable or not, then emit `drag:end` event.
-
-#### Slots
-
-| Name    | Description                    | Parameters | Fallback Content |
-| ------- | ------------------------------ | ---------- | ---------------- |
-| default | the child node of **dropzone** | none       | empty            |
-
-#### Events
-
-`DndDropzone` does not emit any events.
-
-#### Exposes
-
-`DndDropzone` does not use `expose` to expose any contents.
-
-### DndHandle
-
-`DndHandle` is used for rendering the **handle** of **source**. If a **source** contains **handles**, only when we try to drag **handles** in that **source**, `DndProvider` can perceive that we are attempting to drag that **source** and then emits `drag:start` or `drag:prevent` event.
-
-#### Props
-
-| Name | Type   | Description                            | Required | Default |
-| ---- | ------ | -------------------------------------- | -------- | ------- |
-| tag  | string | html tag used for rendering **handle** | false    | 'div'   |
-
-#### Slots
-
-| Name    | Description                  | Parameters | Fallback Content |
-| ------- | ---------------------------- | ---------- | ---------------- |
-| default | the child node of **handle** | none       | empty            |
-
-#### Events
-
-`DndHandle` does not emit any events.
-
-#### Exposes
-
-`DndHandle` does not use `expose` to expose any contents.
-
-## Compositions
-
-### useDnd
-
-Creates a [DndInstance](./docs/en/instance.md), distinguishing instance types by the `type` option.
-
-### useNativeDnd
-
-Creates a [DndInstance](./docs/en/instance.md) for `NativeDnd`.
-
-### useMouseDnd
-
-Creates a [DndInstance](./docs/en/instance.md) for `MouseDnd`.
-
-### useTouchDnd
-
-Creates a [DndInstance](./docs/en/instance.md) for `TouchDnd`.
-
-## ArrayUtils
-
-Vdnd provides a set of utility for updating reactive array, which can be helpful when implementing actual drop effects.
-
-### unshift
-
-Inserts new elements at the start of an array.
-
-### shift
-
-Removes the first element from an array.
-
-### push
-
-Appends new elements to the end of an array.
-
-### pop
-
-Removes the last element from an array.
-
-### splice
-
-Removes elements from an array and, if necessary, inserts new elements in their place.
-
-### find
-
-Returns the value of the first element that meets the specified condition in an array.
-
-### findLast
-
-Returns the value of the last element that meets the specified condition in an array.
-
-### findIndex
-
-Returns the index of the first element that meets the specified condition in an array.
-
-### findLastIndex
-
-Returns the index of the last element that meets the specified condition in an array.
-
-### swap
-
-- Swaps elements in an array.
-- Swaps elements between two arrays.
-
-### remove
-
-Removes an element that meets the specified condition from an array.
-
-### insert
-
-Inserts new elements before or after a certain position in an array.
-
-# Thanks
-
-[@shopify/draggable](https://www.npmjs.com/package/@shopify/draggable) brings inspiration to vdnd.
+```typescript
+// import '@vdnd/demo.css';
+import { useDndModel, DndContainer, DndSource, DndDropzone } from '@vdnd/v3';
+
+const dnd = useDndModel();
+dnd.defineInteraction({
+  scope: 's+d',
+  source: 'text',
+  dropzone: 'canvas',
+  dropEffect: 'copy',
+  onDrop(e) {
+    console.log('drop, text -> canvas, ', e);
+  },
+});
+dnd.defineInteraction({
+  scope: 's+d',
+  source: 'image',
+  dropzone: 'canvas',
+  dropEffect: 'link',
+  onDrop(e) {
+    console.log('drop, image -> canvas, ', e);
+  },
+});
+```
+
+## Define types
+
+```typescript
+import { DndSuite, type IDndSuite } from '@vdnd/v3';
+
+type ImageSource = {
+  label: 'image';
+  data: undefined;
+};
+type TextSource = {
+  label: 'text';
+  data: undefined;
+};
+type IDndSource = ImageSource | TextSource;
+
+type CanvasDropzone = {
+  label: 'canvas';
+  data: undefined;
+};
+type IDndDropzone = CanvasDropzone;
+
+const {
+  useDndModel,
+  injectDndModel,
+  DndContainer,
+  DndSource,
+  DndDropzone,
+  DndHandle,
+} = DndSuite as IDndSuite<IDndSource, IDndDropzone>;
+
+export {
+  useDndModel,
+  injectDndModel,
+  DndContainer,
+  DndSource,
+  DndDropzone,
+  DndHandle,
+};
+
+export type * from '@vdnd/v3';
+```
+
+## API.useDndModel
+
+```typescript
+import { useDndModel } from '@vdnd/v3';
+
+const dnd = useDndModel({
+  classes: {
+    container: 'dnd-container', // default
+    source: 'dnd-source', // default
+    dropzone: 'dnd-dropzone', // default
+    handle: 'dnd-handle', // default
+    'source:dragging': 'is-dragging', // default: `${source}--dragging`
+    'source:draggable': 'is-draggable', // default: `${source}--draggable`
+    'source:disabled': 'is-disabled', // default: `${source}--disabled`
+    'dropzone:over': 'is-over', // default: `${dropzone}--over`
+    'dropzone:droppable': 'is-droppable', // default: `${dropzone}--droppable`
+    'dropzone:disabled': 'is-disabled', // default: `${dropzone}--disabled`
+  },
+  interactions: [],
+});
+```
+
+### dnd.defineInteraction
+
+Define a set of related DND interaction logic, consisting of
+
+1. Properties: `draggable`, `droppable`, `dropEffect`.
+
+2. Event callbacks: `onDrag`, `onDragStart`, `onDragPrevent`, `onDragEnter`, `onDragOver`, `onDragLeave`, `onDrop`, `onDragEnd`.
+
+3. Their scope, which restricts the target objects of the properties and the triggering conditions for the event callbacks.
+
+#### draggable
+
+```typescript
+dnd.defineInteraction({
+  scope: '*',
+  draggable(source) {
+    // the source is unknown
+    return true;
+  },
+});
+
+dnd.defineInteraction({
+  scope: 's',
+  source: 'image',
+  draggable(source) {
+    // the source's type must be `ImageSource`
+    return false;
+  },
+  onDragPrevent(e) {
+    // the e.source's type must be `ImageSource`
+    console.log('dragprevent', e);
+  },
+});
+```
+
+#### droppable
+
+```typescript
+dnd.defineInteraction({
+  scope: '*',
+  droppable(dropzone, source) {
+    // the source and dropzone are unknown
+    return true;
+  },
+});
+
+dnd.defineInteraction({
+  scope: 'd',
+  dropzone: 'canvas',
+  droppable(dropzone, source) {
+    // the source is unknown
+    // the dropzone's type must be `CanvasDropzone`
+    return true;
+  },
+  onDrop(e) {
+    // the e.source is unknown
+    // the e.dropzone's type must be `CanvasDropzone`
+    console.log(e.source.label !== 'image'); // true, see below
+  },
+});
+
+dnd.defineInteraction({
+  scope: 's+d',
+  source: 'image',
+  dropzone: 'canvas',
+  droppable(dropzone, source) {
+    // the source's type must be `ImageSource`
+    // the dropzone's type must be `CanvasDropzone`
+    return false;
+  },
+});
+```
+
+#### dropEffect
+
+```typescript
+dnd.defineInteraction({
+  scope: 's+d',
+  source: 'image',
+  dropzone: 'canvas',
+  dropEffect(dropzone, source) {
+    return 'link';
+  },
+  onDrop(e) {
+    // the e.source's type must be `ImageSource`
+    // the e.dropzone's type must be `CanvasDropzone`
+    console.log('drop, image -> canvas, ', e);
+  },
+});
+```
+
+### dnd.isDragging
+
+```typescript
+dnd.defineInteraction({
+  scope: '*',
+  onDragStart(e) {
+    console.log(dnd.isDragging()); // true
+    console.log(dnd.isDragging(e.source)); // true
+    console.log(dnd.isDragging('image')); // unknown
+  },
+});
+```
+
+### dnd.isOver
+
+```typescript
+dnd.defineInteraction({
+  scope: '*',
+  onDragEnter(e) {
+    console.log(dnd.isOver()); // true
+    console.log(dnd.isOver(e.enter)); // true
+    console.log(dnd.isOver('canvas')); // unknown
+  },
+});
+```
+
+### dnd.isDraggable
+
+```typescript
+dnd.defineInteraction({
+  scope: '*',
+  onDragStart(e) {
+    console.log(dnd.isDraggable(e.source)); // true
+  },
+  onDragPrevent(e) {
+    console.log(dnd.isDraggable(e.source)); // false
+  },
+});
+```
+
+### dnd.isDroppable
+
+```typescript
+dnd.defineInteraction({
+  scope: '*',
+  onDragEnter(e) {
+    console.log(dnd.isDroppable(e.enter)); // unknown
+  },
+  onDrop(e) {
+    console.log(dnd.isDroppable(e.dropzone)); // true
+  },
+});
+```
+
+### dnd.findHTMLElement
+
+```typescript
+onMounted(() => {
+  console.log(dnd.findHTMLElement('container'));
+});
+```
+
+### dnd.findHTMLElements
+
+```typescript
+onMounted(() => {
+  console.log(dnd.findHTMLElements('source'));
+  console.log(dnd.findHTMLElements('dropzone'));
+});
+```
+
+## Next version (1.0.0-rc.5)
+
+- Conside your suggestions

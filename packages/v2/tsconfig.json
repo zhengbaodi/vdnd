@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "baseUrl": "./",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext",
+    ],
+    "noEmit": true,
+    "checkJs": true,
+    "strict": true,
+    "alwaysStrict": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "useDefineForClassFields": true,
+    "isolatedModules": true,
+    "importHelpers": false,
+    "module": "preserve",
+    "target": "esnext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+  },
+  "include": [
+    "src"
+  ],
+}

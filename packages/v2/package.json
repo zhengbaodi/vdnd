@@ -1,18 +1,13 @@
 {
   "name": "@vdnd/v2",
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0-rc.4",
   "type": "module",
-  "description": "Easy used vue drag and drop component library.",
-  "module": "dist/index.mjs",
-  "main": "dist/index.cjs",
+  "description": "A Vue drag-and-drop component library that is easy to use.",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
-  "unpkg": "dist/index.iife.min.js",
-  "jsdelivr": "dist/index.iife.min.js",
   "keywords": [
-    "vdnd",
     "vue-dnd",
-    "vue2-dnd",
-    "vue3-dnd",
+    "vue-drag-drop",
     "drag and drop",
     "vue drag and drop"
   ],
@@ -20,10 +15,14 @@
     "dist"
   ],
   "scripts": {
-    "copy": "node ./scripts/copy.mjs",
-    "prebuild": "rimraf ./dist && pnpm copy",
+    "dev": "cross-env NODE_ENV=development pnpm build --watch",
+    "prebuild": "rimraf ./dist",
     "build": "rollup -c rollup.config.js",
-    "prepack": "pnpm build"
+    "type-check": "tsc --noEmit",
+    "prepack": "pnpm type-check && pnpm run build"
+  },
+  "dependencies": {
+    "@vdnd/native": "workspace:*"
   },
   "peerDependencies": {
     "vue": "catalog:vue2"

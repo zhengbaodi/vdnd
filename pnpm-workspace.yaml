@@ -1,8 +1,9 @@
 packages:
   - 'packages/*'
+  - 'test/*'
 
 catalogs:
   vue2:
     vue: ^2.7.0
   vue3:
-    vue: ^3.0.0
+    vue: ^3.3.0

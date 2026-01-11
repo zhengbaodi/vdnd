@@ -1,3 +1,0 @@
-pnpm publish --access=public -r --no-git-checks
-pnpm publish --access=public -r --no-git-checks --tag=rc
-pnpm publish --access=public -r --no-git-checks --tag=beta

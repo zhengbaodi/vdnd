@@ -1,0 +1,87 @@
+import {
+  h,
+  shallowRef,
+  onMounted,
+  watchPostEffect,
+  defineComponent,
+  type HTMLAttributes,
+} from 'vue';
+import { injectDndModel } from '../dnd-model';
+
+/**
+ * Check if a handle is a descendant element of the specified sources
+ */
+export function validateHandle(handle: HTMLElement, sources: HTMLElement[]) {
+  let parent: HTMLElement | null = handle.parentElement;
+  while (parent) {
+    if (sources.includes(parent)) {
+      return true;
+    }
+    parent = parent.parentElement;
+  }
+  return false;
+}
+
+export type DndHandleProps = HTMLAttributes & {
+  tag?: string;
+};
+
+export const DndHandle = defineComponent(
+  (props: DndHandleProps, { slots }) => {
+    const model = injectDndModel();
+    const roolElRef = shallowRef<HTMLElement>();
+
+    if (!model) {
+      onMounted(() => {
+        console.warn(
+          '[vdnd warn]: If the <DndHandle />(%o) is not nested within the <DndContainer />, it will not function as expected.',
+          roolElRef.value
+        );
+      });
+      return () => {
+        return h(props.tag!, { ref: roolElRef }, { default: slots.default });
+      };
+    }
+
+    watchPostEffect((onCleanup) => {
+      if (!roolElRef.value) return;
+      model.$addNativeElement('handle', roolElRef.value!, void 0);
+      onCleanup(() => {
+        model.$removeNativeElement('handle', roolElRef.value!);
+      });
+    });
+
+    onMounted(() => {
+      if (model.initialized) {
+        const sources = model.findHTMLElements('source');
+        if (!validateHandle(roolElRef.value!, sources)) {
+          console.warn(
+            '[vdnd warn]: If the <DndHandle />(%o) is not nested within the <DndSource />, it will not function as expected.',
+            roolElRef.value
+          );
+        }
+      }
+    });
+
+    return () => {
+      return h(
+        props.tag!,
+        {
+          ref: roolElRef,
+          draggable: true,
+          class: model.classes.handle,
+        },
+        { default: slots.default }
+      );
+    };
+  },
+  {
+    name: 'DndHandle',
+    props: {
+      tag: {
+        type: String,
+        default: 'div',
+      },
+    },
+  }
+);

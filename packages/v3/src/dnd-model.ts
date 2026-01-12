@@ -231,7 +231,7 @@ export function useDndModel<
     if (!isDragging()) {
       console.warn(
         '[vdnd warn]: We can only call `isDroppable` during the drag-and-drop operation, ' +
-          'because one of the `droppable` signatures takes the current source as a parameter.'
+          'because one of the `droppable` signatures takes the current drag source as a parameter.'
       );
       return false;
     }
@@ -402,9 +402,6 @@ export function useDndModel<
 
 export const DndModelSymbol = Symbol('DndModelSymbol');
 
-/**
- * Inject the dnd model of the `<DndContainer :model="?" />`
- */
 export function injectDndModel<
   Source extends DndElement = DndElement,
   Dropzone extends DndElement = DndElement,

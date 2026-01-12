@@ -478,7 +478,7 @@ export const DndContainer = defineComponent(
           removedNodes.forEach((removedNode) => {
             if (removedNode === source) {
               console.warn(
-                '[vdnd warn]: The current source(%o) was removed from the document during the drag-and-drop operation, ' +
+                '[vdnd warn]: The current drag source(%o) was removed from the document during the drag-and-drop operation, ' +
                   'which will result in the inability to dispatch the `drag` and `dragend` events.',
                 removedNode
               );

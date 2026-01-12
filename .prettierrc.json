@@ -11,5 +11,14 @@
   "proseWrap": "preserve",
   "htmlWhitespaceSensitivity": "css",
   "rangeStart": 0,
-  "insertPragma": false
+  "insertPragma": false,
+  "overrides": [
+    {
+      "files": "*.md",
+      "options": {
+        "printWidth": 120,
+        "tabWidth": 2
+      }
+    }
+  ]
 }

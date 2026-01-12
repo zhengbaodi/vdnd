@@ -1,6 +1,6 @@
 {
   "name": "@vdnd/native",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0",
   "type": "module",
   "description": "The DOM layer implementation for @vdnd/v3.",
   "module": "dist/index.js",

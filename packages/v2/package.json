@@ -1,6 +1,6 @@
 {
   "name": "@vdnd/v2",
-  "version": "1.0.0-rc.4",
+  "version": "1.0.0",
   "type": "module",
   "description": "A Vue drag-and-drop component library that is easy to use.",
   "module": "dist/index.js",

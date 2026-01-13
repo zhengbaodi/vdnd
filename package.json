@@ -2,7 +2,7 @@
   "name": "vdnd",
   "private": true,
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "type-check": "pnpm --filter * type-check",
     "postinstall": "cross-env NODE_ENV=development pnpm build",
@@ -38,4 +38,3 @@
     "node": "20.19.6"
   }
 }
-

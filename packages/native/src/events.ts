@@ -4,12 +4,12 @@ export abstract class AbstractEvent {
   static readonly cancelable: boolean = false;
 
   /**
-   * Private instance variable to track canceled state
+   * Private instance variable to track canceled state.
    */
   private _canceled = false;
 
   /**
-   * Read-only cancelable
+   * Read-only cancelable.
    */
   get cancelable() {
     return (this.constructor as typeof AbstractEvent).cancelable;
@@ -20,7 +20,7 @@ export abstract class AbstractEvent {
   }
 
   /**
-   * Cancels the event instance
+   * Cancels the event instance.
    */
   cancel() {
     if (this.cancelable) {
@@ -29,7 +29,7 @@ export abstract class AbstractEvent {
   }
 
   /**
-   * Check if event has been canceled
+   * Check if event has been canceled.
    */
   canceled() {
     return this._canceled;

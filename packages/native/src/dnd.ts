@@ -83,7 +83,7 @@ export class NativeDnd extends Emitter<NativeDndEventTable> {
     document.addEventListener('dragstart', this.onDragStart);
     // We need to capture the movement of the mouse leaving the container, therefore,
     document.addEventListener('dragenter', this.onDragEnter);
-    // Instead of this.container.addEventListener
+    // Instead of this.container.addEventListener.
     document.addEventListener('dragover', this.onDragOver);
     document.addEventListener('dragleave', this.onDragLeave);
     document.addEventListener('drop', this.onDrop);
@@ -189,13 +189,13 @@ export class NativeDnd extends Emitter<NativeDndEventTable> {
   private onDragEnter = (e: globalThis.DragEvent) => {
     if (!e.isTrusted || !this.dragging) return;
     const target = e.target as Element;
-    // Mouse leaves the container
+    // Mouse leaves the container.
     if (!closest(target, this.container)) {
       this._currentTarget = null;
       return;
     }
 
-    // Mouse is still in the container
+    // Mouse is still in the container.
     const enter = closest(target, this.options.dropzone);
     if (!enter || !(enter instanceof HTMLElement)) {
       this._currentTarget = null;

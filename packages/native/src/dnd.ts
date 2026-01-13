@@ -167,15 +167,10 @@ export class NativeDnd extends Emitter<NativeDndEventTable> {
     }
 
     this._currentSource = source;
-    const trigger = handle || source;
 
-    if (trigger === handle) {
-      const { top, left } = this._currentSource.getBoundingClientRect();
-      e.dataTransfer!.setDragImage(
-        this._currentSource,
-        e.clientX - left,
-        e.clientY - top
-      );
+    if (target !== source) {
+      const { top, left } = source.getBoundingClientRect();
+      e.dataTransfer!.setDragImage(source, e.clientX - left, e.clientY - top);
     }
 
     const dragStartEvent = new DragStartEvent(source, this.container, e);

@@ -10,6 +10,12 @@ import {
 import { closest } from './closest';
 import { Emitter } from './emitter';
 
+function isTextControl(target: unknown) {
+  return (
+    target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement
+  );
+}
+
 /**
  * Finds all handles directly belonging to the target source.
  *
@@ -139,6 +145,11 @@ export class NativeDnd extends Emitter<NativeDndEventTable> {
     const source = closest(target, this.options.source) as HTMLElement | null;
     if (!source) return;
 
+    const isActiveInput =
+      isTextControl(target) && target === document.activeElement;
+    // <img />, <a />, <div draggable="true" />
+    const isDraggableDescendant = target !== source && target.draggable;
+
     let handle: HTMLElement | undefined;
     if (this.isRecognizedSource(source) && this.options.handle) {
       const handles = findHandlesIn(
@@ -160,7 +171,9 @@ export class NativeDnd extends Emitter<NativeDndEventTable> {
       if (draggableHandles.length) {
         handle = draggableHandles.find((handle) => !!closest(target, handle));
         if (!handle) {
-          e.preventDefault();
+          if (!isActiveInput && !isDraggableDescendant) {
+            e.preventDefault();
+          }
           return;
         }
       }
@@ -176,7 +189,23 @@ export class NativeDnd extends Emitter<NativeDndEventTable> {
     const dragStartEvent = new DragStartEvent(source, this.container, e);
     this.emit('dragstart', dragStartEvent);
     if (dragStartEvent.canceled()) {
-      e.preventDefault();
+      if (!isActiveInput && !isDraggableDescendant) {
+        e.preventDefault();
+      } else if (isDraggableDescendant) {
+        // Restore the default drag image.
+        const { top, left } = target.getBoundingClientRect();
+        e.dataTransfer!.setDragImage(target, e.clientX - left, e.clientY - top);
+      } else {
+        // Restore the default drag image.
+        const { top, left } = target.getBoundingClientRect();
+        e.dataTransfer!.setDragImage(
+          // If the target element is not inserted into the document,
+          // the browser will use the current text selection as the drag image.
+          document.createElement('span'),
+          e.clientX - left,
+          e.clientY - top
+        );
+      }
       this._currentSource = null;
     }
   };

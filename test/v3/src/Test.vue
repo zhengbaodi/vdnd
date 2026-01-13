@@ -10,6 +10,7 @@ import TestHandle from './tests/test-handle.vue';
 import TestSourceEvents from './tests/test-source-events.vue';
 import TestDropzoneEvents from './tests/test-dropzone-events.vue';
 import TestCustomClasses from './tests/test-custom-classes.vue';
+import TestDraggableDescendant from './tests/test-draggable-descendant.vue';
 import TestUnorderedInteractions from './tests/test-unordered-interactions.vue';
 import TestEffectAllowed from './tests/test-effectAllowed.vue';
 import TestDropEffect from './tests/test-dropEffect.vue';
@@ -31,6 +32,7 @@ const tests = [
   { title: 'source-events', component: TestSourceEvents },
   { title: 'dropzone-events', component: TestDropzoneEvents },
   { title: 'custom-classes', component: TestCustomClasses },
+  { title: 'draggable-descendant', component: TestDraggableDescendant },
   { title: 'unordered-interactions', component: TestUnorderedInteractions },
   { title: 'effectAllowed', component: TestEffectAllowed },
   { title: 'dropEffect', component: TestDropEffect },
